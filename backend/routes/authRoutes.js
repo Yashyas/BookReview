@@ -4,6 +4,7 @@ import {body} from 'express-validator'
 
 const router = express.Router();
 
+// POST register user
 router.post(
     '/register',
     [
@@ -14,6 +15,7 @@ router.post(
     registerUser
 )
 
+//POST login user
 router.post('/login',loginUser)
 
 export default router

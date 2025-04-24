@@ -7,28 +7,34 @@ import BookDetails from "./pages/BookDetails";
 import BookList from "./pages/BookList";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import BookList from "./pages/BookList";
+import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <Routes>
-      <Route path="/" element={<Homepage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/books/:id" element={<BookDetails />} />
-      <Route path="/books" element={<BookList />} />
-      <Route
-        path="/profile"
-        element={
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        }
-      />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <div className="min-h-screen bg-[#B2E0D6] text-[#36454F]">
+      <Navbar />
+      <div className="container mx-auto p-4">
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/books/:id" element={<BookDetails />} />
+          <Route path="/books" element={<BookList />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </div>
   );
 }
 

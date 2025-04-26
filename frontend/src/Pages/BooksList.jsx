@@ -66,7 +66,7 @@ function BooksList() {
                     <h3 className="text-xl font-semibold text-gray-700">{book.title}</h3>
                     <p className="text-gray-500 mb-2">by {book.author}</p>
                     <Link
-                      to={`/books/${book._id}`}
+                      to={`/book/${book._id}`}
                       className="text-indigo-600 hover:text-indigo-800 font-semibold"
                     >
                       View Details →

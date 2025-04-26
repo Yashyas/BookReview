@@ -10,6 +10,7 @@ import HomePage from './Pages/HomePage'
 import Navbar from './Components.jsx/Navbar'
 import About from './Pages/About'
 import BooksList from './Pages/BooksList'
+import BookPage from './Pages/BookPage'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <Route path="/" element={<HomePage/>} />
     <Route path="/about" element={<About/>} />
     <Route path="/books" element={<BooksList/>} />
+    <Route path="/book/:id" element={<BookPage />} />
     <Route path="/login" element={<Login />} />
      <Route path="/register" element={<Register />} />
      <Route path="/unauthorized" element={<Unauthorized />} />

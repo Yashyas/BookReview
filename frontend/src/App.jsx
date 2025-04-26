@@ -1,41 +1,40 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import BookDetails from "./pages/BookDetails";
-import BookList from "./pages/BookList";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
-import Navbar from "./components/Navbar";
-import PrivateRoute from "./components/PrivateRoute";
+import { useState } from 'react'
+import { Routes,Route } from 'react-router-dom'
+import PrivateRoute from './Components.jsx/PrivateRoute'
+import AdminDashboard from './Pages/AdminDashboard'
+import UserDashboard from './Pages/UserDashboard'
+import Login from './Pages/Login'
+import Register from './Pages/Register'
+import Unauthorized from './Pages/Unauthorized'
+import HomePage from './Pages/HomePage'
+import Navbar from './Components.jsx/Navbar'
+import About from './Pages/About'
+import BooksList from './Pages/BooksList'
+
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
-    <div className="min-h-screen bg-[#B2E0D6] text-[#36454F]">
-      <Navbar />
-      <div className="container mx-auto p-4">
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/books/:id" element={<BookDetails />} />
-          <Route path="/books" element={<BookList />} />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-    </div>
-  );
+    <>
+    <Navbar/>
+   <Routes>
+    <Route path="/" element={<HomePage/>} />
+    <Route path="/about" element={<About/>} />
+    <Route path="/books" element={<BooksList/>} />
+    <Route path="/login" element={<Login />} />
+     <Route path="/register" element={<Register />} />
+     <Route path="/unauthorized" element={<Unauthorized />} />
+     <Route path="/admin-dashboard" element={
+      <PrivateRoute role="admin">
+      <AdminDashboard/>
+     </PrivateRoute>} />
+     <Route path="/user-dashboard" element={
+      <PrivateRoute role="user">
+      <UserDashboard/>
+     </PrivateRoute>} />
+   </Routes>
+   </>
+  )
 }
 
-export default App;
+export default App

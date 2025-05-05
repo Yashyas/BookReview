@@ -17,7 +17,7 @@ const ReviewSection = ({ bookId }) => {
 
   const fetchReviews = async () => {
     try {
-      const res = await API.get(`/api/reviews/${bookId}`);
+      const res = await API.get(`/api/reviews?bookId=${bookId}`);
       setReviews(res.data);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -34,7 +34,8 @@ const ReviewSection = ({ bookId }) => {
 
     try {
       setLoading(true);
-      await API.post(`/api/reviews/${bookId}`, {
+      await API.post(`/api/reviews/`, {
+        bookId:bookId,
         text: reviewText,
         rating:rating,
         // userName: user?.name || "Anonymous",
@@ -98,7 +99,7 @@ const ReviewSection = ({ bookId }) => {
         ) : (
           <div className="space-y-4">
             {reviews.map((r) => (
-              <div key={r.id} className="border p-4 rounded-md space-y-2">
+              <div key={r._id} className="border p-4 rounded-md space-y-2">
                 <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <span
@@ -109,8 +110,8 @@ const ReviewSection = ({ bookId }) => {
                     </span>
                   ))}
                 </div>
-                <p className="text-gray-800">{r.review}</p>
-                <p className="text-gray-500 text-sm">- {r.userName}</p>
+                <p className="text-gray-800">{r.text}</p>
+                <p className="text-gray-500 text-sm">- {r.userId.name}</p>
               </div>
             ))}
           </div>

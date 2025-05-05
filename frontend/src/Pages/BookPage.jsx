@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api";
-import ReviewSection from "../Components.jsx/ReviewSection";
+import ReviewSection from "../Components/ReviewSection";
 import toast from "react-hot-toast";
 
 const BookPage = () => {

@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useAuth } from "../Context/AuthContext";
 import toast from "react-hot-toast";
 import API from "../api"; // adjust the path as per your folder structure
+import Beautify from "./Beautify";
 
 const ReviewSection = ({ bookId }) => {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ const ReviewSection = ({ bookId }) => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showBeautifyModal, setShowBeautifyModal] = useState(false);
 
   useEffect(() => {
     fetchReviews();
@@ -35,10 +37,9 @@ const ReviewSection = ({ bookId }) => {
     try {
       setLoading(true);
       await API.post(`/api/reviews/`, {
-        bookId:bookId,
+        bookId: bookId,
         text: reviewText,
-        rating:rating,
-        // userName: user?.name || "Anonymous",
+        rating: rating,
       });
       setReviewText("");
       setRating(0);
@@ -57,6 +58,9 @@ const ReviewSection = ({ bookId }) => {
       {/* Review Form */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Leave a Review</h2>
+
+        {/* Review form text area */}
+
         {user ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <textarea
@@ -66,18 +70,55 @@ const ReviewSection = ({ bookId }) => {
               rows="4"
               placeholder="Write your review here..."
             />
+            {/* Beutified text response */}
+      <Beautify
+          isOpen={showBeautifyModal}
+          onClose={() => setShowBeautifyModal(false)}
+          originalText={reviewText}
+          onSubmit={async (beautified) => {
+            try {
+              setLoading(true);
+              await API.post(`/api/reviews`, {
+                bookId:bookId,
+                text: beautified,
+                rating:rating,
+              });
+              toast.success("Beautified review submitted!");
+              setReviewText("");
+              setRating(0);
+              fetchReviews();
+            } catch (err) {
+              console.error(err);
+              toast.error("Failed to submit.");
+            } finally {
+              setShowBeautifyModal(false);
+              setLoading(false);
+            }
+          }}
+        />
             <div className="flex items-center space-x-2">
               {[...Array(5)].map((_, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setRating(i + 1)}
-                  className={`text-2xl ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`text-2xl ${
+                    i < rating ? "text-yellow-400" : "text-gray-300"
+                  }`}
                 >
                   ★
                 </button>
               ))}
             </div>
+            <button
+              type="button"
+              className="bg-green-600 text-white px-6 py-2 m-2 rounded-md hover:bg-green-700"
+              disabled={!reviewText || rating === 0}
+              onClick={() => setShowBeautifyModal(true)}
+            >
+              Beautify with AI
+            </button>
+
             <button
               type="submit"
               className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
@@ -86,11 +127,12 @@ const ReviewSection = ({ bookId }) => {
               {loading ? "Submitting..." : "Submit Review"}
             </button>
           </form>
+          
         ) : (
           <p className="text-gray-600">Please login to write a review.</p>
         )}
       </div>
-
+      
       {/* Reviews List */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Reviews</h2>
@@ -104,7 +146,9 @@ const ReviewSection = ({ bookId }) => {
                   {[...Array(5)].map((_, i) => (
                     <span
                       key={i}
-                      className={`text-xl ${i < r.rating ? "text-yellow-400" : "text-gray-300"}`}
+                      className={`text-xl ${
+                        i < r.rating ? "text-yellow-400" : "text-gray-300"
+                      }`}
                     >
                       ★
                     </span>
